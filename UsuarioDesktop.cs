@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Data.Database;
 
 namespace UI.Desktop
 {
@@ -24,6 +25,9 @@ namespace UI.Desktop
         }
 
 
+
+
+        //Constructor para modificaciones
         public UsuarioDesktop(int id, ModoForm modo) : this()
         {
             _modo = modo;
@@ -32,12 +36,23 @@ namespace UI.Desktop
             this.MapearDeDatos();
         }
 
+
+
+
+
         public UsuarioDesktop()
         {
             InitializeComponent();
         }
 
 
+
+
+
+
+
+
+        //Consulta
         public override void MapearDeDatos()
         {
             this.txtIdUsuario.Text = this.usuarioActual.ID.ToString();
@@ -66,60 +81,122 @@ namespace UI.Desktop
         }
 
 
+
         public override void MapearADatos()
         {
-            if (_modo == ModoForm.Alta)
+            usuarioActual = new Business.Entities.Usuario();
+            this.usuarioActual._Apellido = this.txtApellido.Text;
+            this.usuarioActual._Nombre = this.txtNombre.Text;
+            this.usuarioActual._NombreUsuario = this.txtUsuario.Text;
+            this.usuarioActual._Email = this.txtEmail.Text;
+            this.usuarioActual._Clave = this.txtClave.Text;
+            this.usuarioActual.State = Business.Entities.BusinessEntity.States.New;
+            this.GuardarCambios(usuarioActual);
+        }
+
+
+
+        public override void GuardarCambios(Business.Entities.Usuario usuario)
+        {
+            UsuarioAdapter usuarioNuevo = new UsuarioAdapter();
+            usuarioNuevo.Save(usuario);
+        }
+
+
+        public override bool Validar()
+        {
+
+            bool bandera = true;
+
+            if(string.IsNullOrEmpty(this.txtApellido.Text)) 
             {
-                usuarioActual = new Business.Entities.Usuario();
-                this.usuarioActual._Apellido = this.txtApellido.Text;
-                this.usuarioActual._Nombre = this.txtNombre.Text;
-                this.usuarioActual._NombreUsuario = this.txtUsuario.Text;
-                this.usuarioActual._Email = this.txtEmail.Text;
-                this.usuarioActual._Clave = this.txtClave.Text;
-                this.usuarioActual.State = Business.Entities.BusinessEntity.States.New;
+                bandera = false;
+                throw new Exception("Debe completar el campo apellido");
+
             }
 
-            else if(_modo == ModoForm.Modificacion)
+            if (string.IsNullOrEmpty(this.txtNombre.Text))
             {
-                this.usuarioActual._Apellido = this.txtApellido.Text;
-                this.usuarioActual._Nombre = this.txtNombre.Text;
-                this.usuarioActual._NombreUsuario = this.txtUsuario.Text;
-                this.usuarioActual._Email = this.txtEmail.Text;
-                this.usuarioActual._Clave = this.txtClave.Text;
-                this.usuarioActual.State = Business.Entities.BusinessEntity.States.Modified;
+                bandera = false;
+                throw new Exception("Debe completar el campo nombre");
             }
 
+            if (string.IsNullOrEmpty(this.txtUsuario.Text))
+            {
+                bandera = false;
+                throw new Exception("Debe completar el campo usuario");
+            }
+
+            //Parte del email
+            if (string.IsNullOrEmpty(this.txtEmail.Text))
+            {
+                bandera = false;
+                throw new Exception("Debe completar el campo email");
+            }
+
+            else
+            {
+                if(this.txtEmail.Text.Contains("@"))
+                {
+
+                }
+
+                else
+                {
+                    bandera = false;
+                    throw new Exception("Email incorrecto, falta el símbolo @");
+                }
+            }
+            //Parte del email
 
 
 
 
+            if(string.IsNullOrEmpty(this.txtClave.Text))
+            {
+                bandera = false;
+                throw new Exception("Debe completar el campo clave");
+                
+            }
 
+            else
+            {
+                if(this.txtClave.Text.Length < 8)
+                {
+                    bandera = false;
+                    throw new Exception("La clave debe poseer un mínimo de 8 caracteres");
+                    
+                }
+
+            }
+
+            if(string.IsNullOrEmpty(this.txtConfirmarClave.Text))
+            {
+                bandera = false;
+                throw new Exception("Debe completar el campo confirmar clave");
+                
+            }
+
+            else
+            {
+                if(!this.txtClave.Text.Equals(this.txtConfirmarClave.Text))
+                {
+                    bandera = false;
+                    throw new Exception("Las contraseñas no coinciden");
+                    
+                }
+            }
+
+            if(!bandera)
+            {
+                string mensaje = "Datos incorrectos";
+                //this.Notificar(mensaje);
+            }
+
+            return bandera;
         }
 
 
-
-        public override void GuardarCambios() { }
-
-
-        public override bool Validar() { return false; }
-
-        /*
-        public override void Notificar(string titulo, string mensaje, MessageBoxButtons, botones, MessageBoxIcon icono)
-        {
-            MessageBox.Show(mensaje, titulo, botones, icono);
-        }
-
-        */
-
-
-        
-        /*
-        public void Notificar(string mensaje, MessageBoxButtons botones, MessageBoxIcon icono)
-        {
-            this.Notificar(this.Text, mensaje, botones, icono);
-        }
-
-        */
         
 
 
@@ -145,11 +222,28 @@ namespace UI.Desktop
         }
 
 
+
+
+
+
         //Botón aceptar posee este método
         private void label1_Click_1(object sender, EventArgs e)
         {
+            if(_modo == ModoForm.Alta)
+            {
+                this.MapearADatos();
+                MessageBox.Show("Usuario ingresado correctamente. Actualice la tabla!!!");
+                this.Close();
+            }
+
+
 
         }
+
+
+
+
+
 
         private void tableLayoutPanel1_Paint_1(object sender, PaintEventArgs e)
         {
@@ -167,6 +261,16 @@ namespace UI.Desktop
         }
 
         private void txtNombre_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void txtClave_TextChanged(object sender, EventArgs e)
         {
 
         }

@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -108,6 +109,10 @@
     <ProjectReference Include="Business.Logic\Business.Logic.csproj">
       <Project>{f1bf0c9b-a2cd-4ffd-a445-e6d238c1aca6}</Project>
       <Name>Business.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="Data.Database\Data.Database.csproj">
+      <Project>{2900f55a-3751-4b14-9874-cebe2d5b20f3}</Project>
+      <Name>Data.Database</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

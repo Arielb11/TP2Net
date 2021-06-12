@@ -15,6 +15,9 @@ namespace Data.Database
         // Al modificar este proyecto para que acceda a la base de datos esta será eliminada
         private static List<Usuario> _Usuarios;
 
+
+
+        //Esto es una propiedad
         private static List<Usuario> Usuarios
         {
             get

@@ -38,7 +38,8 @@ namespace UI.Desktop
             this.tsUsuarios = new System.Windows.Forms.ToolStrip();
             this.tsbNuevo = new System.Windows.Forms.ToolStripButton();
             this.tsbEditar = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.tsbEliminar = new System.Windows.Forms.ToolStripButton();
+            this.tsbConsulta = new System.Windows.Forms.ToolStripButton();
             this.tcUsuarios.ContentPanel.SuspendLayout();
             this.tcUsuarios.TopToolStripPanel.SuspendLayout();
             this.tcUsuarios.SuspendLayout();
@@ -69,6 +70,7 @@ namespace UI.Desktop
             this.tlUsuarios.Controls.Add(this.btnActualizar, 0, 1);
             this.tlUsuarios.Controls.Add(this.btnSalir, 1, 1);
             this.tlUsuarios.Name = "tlUsuarios";
+            this.tlUsuarios.Paint += new System.Windows.Forms.PaintEventHandler(this.tlUsuarios_Paint);
             // 
             // dgvUsuarios
             // 
@@ -76,6 +78,7 @@ namespace UI.Desktop
             this.tlUsuarios.SetColumnSpan(this.dgvUsuarios, 2);
             resources.ApplyResources(this.dgvUsuarios, "dgvUsuarios");
             this.dgvUsuarios.Name = "dgvUsuarios";
+            this.dgvUsuarios.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvUsuarios_CellContentClick);
             // 
             // btnActualizar
             // 
@@ -97,7 +100,8 @@ namespace UI.Desktop
             this.tsUsuarios.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbNuevo,
             this.tsbEditar,
-            this.toolStripButton1});
+            this.tsbEliminar,
+            this.tsbConsulta});
             this.tsUsuarios.Name = "tsUsuarios";
             // 
             // tsbNuevo
@@ -105,6 +109,7 @@ namespace UI.Desktop
             this.tsbNuevo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             resources.ApplyResources(this.tsbNuevo, "tsbNuevo");
             this.tsbNuevo.Name = "tsbNuevo";
+            this.tsbNuevo.Click += new System.EventHandler(this.tsbNuevo_Click);
             // 
             // tsbEditar
             // 
@@ -113,11 +118,19 @@ namespace UI.Desktop
             this.tsbEditar.Name = "tsbEditar";
             this.tsbEditar.Click += new System.EventHandler(this.ToolStripButton1_Click);
             // 
-            // toolStripButton1
+            // tsbEliminar
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            resources.ApplyResources(this.toolStripButton1, "toolStripButton1");
-            this.toolStripButton1.Name = "toolStripButton1";
+            this.tsbEliminar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.tsbEliminar, "tsbEliminar");
+            this.tsbEliminar.Name = "tsbEliminar";
+            this.tsbEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
+            // 
+            // tsbConsulta
+            // 
+            this.tsbConsulta.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.tsbConsulta, "tsbConsulta");
+            this.tsbConsulta.Name = "tsbConsulta";
+            this.tsbConsulta.Click += new System.EventHandler(this.tsbConsulta_Click);
             // 
             // Usuarios
             // 
@@ -149,7 +162,8 @@ namespace UI.Desktop
         private System.Windows.Forms.Button btnSalir;
         private System.Windows.Forms.ToolStripButton tsbNuevo;
         private System.Windows.Forms.ToolStripButton tsbEditar;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton tsbEliminar;
+        private System.Windows.Forms.ToolStripButton tsbConsulta;
     }
 }
 

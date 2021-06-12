@@ -198,6 +198,7 @@ namespace UI.Desktop
             this.txtClave.Name = "txtClave";
             this.txtClave.Size = new System.Drawing.Size(269, 20);
             this.txtClave.TabIndex = 10;
+            this.txtClave.TextChanged += new System.EventHandler(this.txtClave_TextChanged);
             // 
             // txtApellido
             // 
@@ -254,6 +255,7 @@ namespace UI.Desktop
             this.btnCancelar.TabIndex = 16;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
             // UsuarioDesktop
             // 
