@@ -35,7 +35,7 @@ namespace UI.Desktop
         /*MapearDeDatos va a ser utilizado en cada formulario para copiar la
          * información de las entidades a los controles del formulario(TextBox, ComboBox, etc) 
          * para mostrar la infromación de cada entidad*/
-        public virtual void MapearDeDatos()
+        public virtual void MapearDeDatos(Business.Entities.Usuario usuario)
         {
 
         }

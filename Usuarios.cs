@@ -14,6 +14,13 @@ namespace UI.Desktop
 {
     public partial class Usuarios : Form
     {
+
+
+
+        Data.Database.UsuarioAdapter database;
+
+
+
         public Usuarios()
         {
             InitializeComponent();
@@ -29,11 +36,15 @@ namespace UI.Desktop
             UsuarioLogic ul = new UsuarioLogic();
             this.dgvUsuarios.DataSource = ul.GetAll();
         }
+        
+
 
         private void Usuarios_Load(object sender, EventArgs e)
         {
             this.Listar();
         }
+        
+
 
         public void BtnActualizar_Click(object sender, EventArgs e)
         {
@@ -50,40 +61,63 @@ namespace UI.Desktop
 
 
 
-        //Botón para modificar
+        //Botón del menú para modificar
         private void ToolStripButton1_Click(object sender, EventArgs e)
         {
-            UsuarioDesktop modificar = new UsuarioDesktop();
-            modificar._modo = ApplicationForm.ModoForm.Modificacion;
-            this.ConsultaUsuario();
-            //modificar.Show();
+            int id = this.ConsultaUsuario();
+            UsuarioDesktop modificar = new UsuarioDesktop(id, ApplicationForm.ModoForm.Modificacion);
+            modificar.Show();
+
+
         }
 
-        //Boton para alta
+
+
+
+
+        //Boton del menú para alta
         private void tsbNuevo_Click(object sender, EventArgs e)
         {
-            UsuarioDesktop alta = new UsuarioDesktop();
-            alta._modo = ApplicationForm.ModoForm.Alta;
+            UsuarioDesktop alta = new UsuarioDesktop(ApplicationForm.ModoForm.Alta);
+            alta.btnAceptar.Text = "Guardar";
             alta.Show();
 
         }
 
-        //Boton para eliminar
+
+
+
+
+
+        //Boton del menú para eliminar
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-            UsuarioDesktop baja = new UsuarioDesktop();
-            baja._modo = ApplicationForm.ModoForm.Baja;
+            int id = this.ConsultaUsuario();
+            UsuarioDesktop baja = new UsuarioDesktop(id, ApplicationForm.ModoForm.Baja);
+            baja.btnAceptar.Text = "Eliminar";
             baja.Show();
+            
         }
 
 
-        //Botón para consulta
+
+
+
+
+
+
+        //Botón del menú para consulta
         private void tsbConsulta_Click(object sender, EventArgs e)
         {
             UsuarioDesktop consulta = new UsuarioDesktop();
             consulta._modo = ApplicationForm.ModoForm.Consulta;
             consulta.Show();
         }
+
+
+
+
+
 
         private void tlUsuarios_Paint(object sender, PaintEventArgs e)
         {
@@ -93,6 +127,9 @@ namespace UI.Desktop
 
 
 
+
+
+        /*
         private Business.Entities.Usuario ConsultaUsuario()
         {
             Business.Entities.Usuario usuario = new Business.Entities.Usuario();
@@ -112,8 +149,30 @@ namespace UI.Desktop
             } while (usuario == null);
 
             return usuario;
-        }
+        }*/
 
+
+        
+        private int ConsultaUsuario()
+        {
+            Business.Entities.Usuario usuario = new Business.Entities.Usuario();
+            Data.Database.UsuarioAdapter database = new Data.Database.UsuarioAdapter();
+            string id;
+
+            do
+            {
+                id = Microsoft.VisualBasic.Interaction.InputBox("Ingrese ID", "Consulta por ID", "UsuarioID", 100, 0);
+                usuario = database.GetOne(int.Parse(id));
+
+                if (usuario == null)
+                {
+                    MessageBox.Show("Id incorrecto, por favor ingrese otro");
+                }
+
+            } while (usuario == null);
+
+            return int.Parse(id);
+        }
 
 
 

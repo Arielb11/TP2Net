@@ -33,7 +33,7 @@ namespace UI.Desktop
             _modo = modo;
             Business.Logic.UsuarioLogic usuarioLogic = new Business.Logic.UsuarioLogic();
             usuarioActual = usuarioLogic.GetOne(id);
-            this.MapearDeDatos();
+            this.MapearDeDatos(usuarioActual);
         }
 
 
@@ -53,8 +53,10 @@ namespace UI.Desktop
 
 
         //Consulta
-        public override void MapearDeDatos()
+        public override void MapearDeDatos(Business.Entities.Usuario usuario)
         {
+
+            usuarioActual = usuario;
             this.txtIdUsuario.Text = this.usuarioActual.ID.ToString();
             this.chkHabilitado.Checked = this.usuarioActual._Habilitado;
             this.txtNombre.Text = this.usuarioActual._Nombre;
@@ -62,28 +64,19 @@ namespace UI.Desktop
             this.txtEmail.Text = this.usuarioActual._Email;
             this.txtIdUsuario.Text = this.usuarioActual._NombreUsuario;
             this.txtClave.Text = this.usuarioActual._Clave;
-
-            if(_modo == ModoForm.Alta)
-            {
-                this.btnAceptar.Text = "Guardar";
-            }
-
-            else if(_modo == ModoForm.Baja)
-            {
-                this.btnAceptar.Text = "Eliminar";
-            }
-
-            else
-            {
-            }
-
-
         }
+
+
+
+
+
+
 
 
 
         public override void MapearADatos()
         {
+            //Esto es para las altas (RECORDAR PASO 15)
             usuarioActual = new Business.Entities.Usuario();
             this.usuarioActual._Apellido = this.txtApellido.Text;
             this.usuarioActual._Nombre = this.txtNombre.Text;
@@ -96,11 +89,30 @@ namespace UI.Desktop
 
 
 
+
+
+
+
+
+
+
+
+
         public override void GuardarCambios(Business.Entities.Usuario usuario)
         {
             UsuarioAdapter usuarioNuevo = new UsuarioAdapter();
             usuarioNuevo.Save(usuario);
         }
+
+
+
+
+
+
+
+
+
+
 
 
         public override bool Validar()
@@ -226,7 +238,7 @@ namespace UI.Desktop
 
 
 
-        //Botón aceptar posee este método
+        //Botón aceptar del formulario USUARIO DESKTOP (Aceptar, eliminar)
         private void label1_Click_1(object sender, EventArgs e)
         {
             if(_modo == ModoForm.Alta)
@@ -237,6 +249,22 @@ namespace UI.Desktop
             }
 
 
+            //Aca se programa el botón aceptar para la modificación
+            else if(_modo == ModoForm.Modificacion)
+            {
+                this.MapearADatos();
+                this.Close();
+            }
+
+            //Aca se programa el botón aceptar para la baja. Se llama "Eliminar", y hay que invocar al método 
+            //Remove de la dataBase
+            else if (_modo == ModoForm.Baja)
+            {
+
+                MessageBox.Show("Usuario eliminado correctamente. Actualice la tabla!!!");
+            }
+
+
 
         }
 
@@ -244,6 +272,8 @@ namespace UI.Desktop
 
 
 
+
+        
 
         private void tableLayoutPanel1_Paint_1(object sender, PaintEventArgs e)
         {
@@ -271,6 +301,11 @@ namespace UI.Desktop
         }
 
         private void txtClave_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void UsuarioDesktop_Load(object sender, EventArgs e)
         {
 
         }

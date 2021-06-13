@@ -265,6 +265,7 @@ namespace UI.Desktop
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "UsuarioDesktop";
             this.Text = "UsuarioDesktop";
+            this.Load += new System.EventHandler(this.UsuarioDesktop_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
@@ -289,7 +290,7 @@ namespace UI.Desktop
         private System.Windows.Forms.TextBox txtUsuario;
         private System.Windows.Forms.TextBox txtConfirmarClave;
         private System.Windows.Forms.CheckBox chkHabilitado;
-        private System.Windows.Forms.Button btnAceptar;
+        public System.Windows.Forms.Button btnAceptar;
         private System.Windows.Forms.Button btnCancelar;
     }
 }
