@@ -18,7 +18,7 @@ namespace Business.Logic
         }
 
 
-
+        //Método que crea una lista de usuarios, y la devuelve
         public List<Usuario> GetAll()
         {
             List<Usuario> usuarios = UsuarioData.GetAll();
@@ -26,18 +26,21 @@ namespace Business.Logic
         }
 
 
+        //Método que recibe como parámetro un id, y que devuelve un usuario.
         public Usuario GetOne(int id)
         {
             Usuario user = UsuarioData.GetOne(id);
             return user;
         }
 
+
+        //Método que recibe como parámetro un id, y que elimina a un usuario
         public void Delete(int id)
         {
             UsuarioData.Delete(id);
         }
 
-
+        //Método que recibe como parámetro un usuario, y lo guarda en la lista
         public void Save(Usuario usuario)
         {
             UsuarioData.Save(usuario);

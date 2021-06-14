@@ -17,7 +17,7 @@ namespace Data.Database
 
 
 
-        //Esto es una propiedad
+        //Esto es una propiedad de la lista de Usuarios
         private static List<Usuario> Usuarios
         {
             get
