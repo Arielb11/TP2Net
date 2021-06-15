@@ -39,7 +39,6 @@ namespace UI.Desktop
             this.tsbNuevo = new System.Windows.Forms.ToolStripButton();
             this.tsbEditar = new System.Windows.Forms.ToolStripButton();
             this.tsbEliminar = new System.Windows.Forms.ToolStripButton();
-            this.tsbConsulta = new System.Windows.Forms.ToolStripButton();
             this.tcUsuarios.ContentPanel.SuspendLayout();
             this.tcUsuarios.TopToolStripPanel.SuspendLayout();
             this.tcUsuarios.SuspendLayout();
@@ -77,7 +76,9 @@ namespace UI.Desktop
             this.dgvUsuarios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tlUsuarios.SetColumnSpan(this.dgvUsuarios, 2);
             resources.ApplyResources(this.dgvUsuarios, "dgvUsuarios");
+            this.dgvUsuarios.MultiSelect = false;
             this.dgvUsuarios.Name = "dgvUsuarios";
+            this.dgvUsuarios.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvUsuarios.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvUsuarios_CellContentClick);
             // 
             // btnActualizar
@@ -100,8 +101,7 @@ namespace UI.Desktop
             this.tsUsuarios.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbNuevo,
             this.tsbEditar,
-            this.tsbEliminar,
-            this.tsbConsulta});
+            this.tsbEliminar});
             this.tsUsuarios.Name = "tsUsuarios";
             // 
             // tsbNuevo
@@ -124,13 +124,6 @@ namespace UI.Desktop
             resources.ApplyResources(this.tsbEliminar, "tsbEliminar");
             this.tsbEliminar.Name = "tsbEliminar";
             this.tsbEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
-            // 
-            // tsbConsulta
-            // 
-            this.tsbConsulta.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            resources.ApplyResources(this.tsbConsulta, "tsbConsulta");
-            this.tsbConsulta.Name = "tsbConsulta";
-            this.tsbConsulta.Click += new System.EventHandler(this.tsbConsulta_Click);
             // 
             // Usuarios
             // 
@@ -163,7 +156,6 @@ namespace UI.Desktop
         private System.Windows.Forms.ToolStripButton tsbNuevo;
         private System.Windows.Forms.ToolStripButton tsbEditar;
         private System.Windows.Forms.ToolStripButton tsbEliminar;
-        private System.Windows.Forms.ToolStripButton tsbConsulta;
     }
 }
 

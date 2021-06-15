@@ -16,13 +16,23 @@ namespace UI.Desktop
 
         Business.Entities.Usuario usuarioActual;
 
+        public Business.Entities.Usuario UsuarioActual
+        {
+            get { return usuarioActual; }
+            set { usuarioActual = value; }
+        }
+
+
+
 
 
         //Este constructor servirá para las altas
         public UsuarioDesktop(ModoForm modo):this()
         {
             _modo = modo;
+            
         }
+
 
 
 
@@ -32,8 +42,8 @@ namespace UI.Desktop
         {
             _modo = modo;
             Business.Logic.UsuarioLogic usuarioLogic = new Business.Logic.UsuarioLogic();
-            usuarioActual = usuarioLogic.GetOne(id);
-            this.MapearDeDatos(usuarioActual);
+            UsuarioActual = usuarioLogic.GetOne(id);
+            this.MapearDeDatos();
         }
 
 
@@ -49,68 +59,74 @@ namespace UI.Desktop
 
 
 
-
-
-
-        //Consulta
-        public override void MapearDeDatos(Business.Entities.Usuario usuario)
+        public override void MapearDeDatos()
         {
+            if(this._modo == ModoForm.Alta || this._modo == ModoForm.Modificacion)
+            {
+                this.btnAceptar.Text = "Guardar";
+            }
 
-            usuarioActual = usuario;
-            this.txtIdUsuario.Text = this.usuarioActual.ID.ToString();
-            this.chkHabilitado.Checked = this.usuarioActual._Habilitado;
-            this.txtNombre.Text = this.usuarioActual._Nombre;
-            this.txtApellido.Text = this.usuarioActual._Apellido;
-            this.txtEmail.Text = this.usuarioActual._Email;
-            this.txtIdUsuario.Text = this.usuarioActual._NombreUsuario;
-            this.txtClave.Text = this.usuarioActual._Clave;
+            else if(this._modo == ModoForm.Baja)
+            {
+                this.btnAceptar.Text = "Eliminar";
+            }
+
+
+            this.txtIdUsuario.Text = this.UsuarioActual.ID.ToString();
+            this.chkHabilitado.Checked = this.UsuarioActual._Habilitado;
+            this.txtNombre.Text = this.UsuarioActual._Nombre;
+            this.txtApellido.Text = this.UsuarioActual._Apellido;
+            this.txtEmail.Text = this.UsuarioActual._Email;
+            this.txtUsuario.Text = this.UsuarioActual._NombreUsuario;
         }
-
-
-
-
-
-
 
 
 
         public override void MapearADatos()
         {
-            //Esto es para las altas (RECORDAR PASO 15)
-            usuarioActual = new Business.Entities.Usuario();
-            this.usuarioActual._Apellido = this.txtApellido.Text;
-            this.usuarioActual._Nombre = this.txtNombre.Text;
-            this.usuarioActual._NombreUsuario = this.txtUsuario.Text;
-            this.usuarioActual._Email = this.txtEmail.Text;
-            this.usuarioActual._Clave = this.txtClave.Text;
-            this.usuarioActual.State = Business.Entities.BusinessEntity.States.New;
-            this.GuardarCambios(usuarioActual);
+            
+            if(this._modo == ModoForm.Alta)
+            {
+                Business.Entities.Usuario nuevoUsuario = new Business.Entities.Usuario();
+                UsuarioActual = nuevoUsuario;
+            }
+            
+            this.UsuarioActual._Apellido = this.txtApellido.Text;
+            this.UsuarioActual._Nombre = this.txtNombre.Text;
+            this.UsuarioActual._NombreUsuario = this.txtUsuario.Text;
+            this.UsuarioActual._Email = this.txtEmail.Text;
+            this.UsuarioActual._Clave = this.txtClave.Text;
+            this.UsuarioActual._Habilitado = this.chkHabilitado.Checked;
+
         }
 
 
 
 
-
-
-
-
-
-
-
-
-        public override void GuardarCambios(Business.Entities.Usuario usuario)
+        public override void GuardarCambios()
         {
-            UsuarioAdapter usuarioNuevo = new UsuarioAdapter();
-            usuarioNuevo.Save(usuario);
+            Business.Logic.UsuarioLogic usuario = new Business.Logic.UsuarioLogic();
+
+            if (this._modo == ModoForm.Alta)
+            {
+                this.MapearADatos();    
+                usuario.Save(UsuarioActual);
+            }
+
+            else if(this._modo == ModoForm.Modificacion)
+            {
+                this.MapearADatos();
+                usuario.Save(UsuarioActual);
+            }
+
+            else if(this._modo == ModoForm.Baja)
+            {
+                usuario.Save(UsuarioActual);
+            }
+
+            
+            
         }
-
-
-
-
-
-
-
-
 
 
 
@@ -122,28 +138,29 @@ namespace UI.Desktop
 
             if(string.IsNullOrEmpty(this.txtApellido.Text)) 
             {
+                MessageBox.Show("Debe completar el campo apellido");
                 bandera = false;
-                throw new Exception("Debe completar el campo apellido");
-
             }
 
             if (string.IsNullOrEmpty(this.txtNombre.Text))
             {
+                MessageBox.Show("Debe completar el campo nombre");
                 bandera = false;
-                throw new Exception("Debe completar el campo nombre");
             }
 
             if (string.IsNullOrEmpty(this.txtUsuario.Text))
             {
+                MessageBox.Show("Debe completar el campo nombre de usuario");
                 bandera = false;
-                throw new Exception("Debe completar el campo usuario");
+                
             }
 
             //Parte del email
             if (string.IsNullOrEmpty(this.txtEmail.Text))
             {
+                MessageBox.Show("Debe completar el campo email");
                 bandera = false;
-                throw new Exception("Debe completar el campo email");
+                
             }
 
             else
@@ -155,8 +172,9 @@ namespace UI.Desktop
 
                 else
                 {
+                    MessageBox.Show("Email incorrecto, falta el símbolo @");
                     bandera = false;
-                    throw new Exception("Email incorrecto, falta el símbolo @");
+                    
                 }
             }
             //Parte del email
@@ -166,17 +184,18 @@ namespace UI.Desktop
 
             if(string.IsNullOrEmpty(this.txtClave.Text))
             {
+                MessageBox.Show("Debe completar el campo clave");
                 bandera = false;
-                throw new Exception("Debe completar el campo clave");
-                
+
             }
 
             else
             {
                 if(this.txtClave.Text.Length < 8)
                 {
+                    MessageBox.Show("La clave debe poseer un mínimo de 8 caracteres");
                     bandera = false;
-                    throw new Exception("La clave debe poseer un mínimo de 8 caracteres");
+                    
                     
                 }
 
@@ -184,8 +203,8 @@ namespace UI.Desktop
 
             if(string.IsNullOrEmpty(this.txtConfirmarClave.Text))
             {
+                MessageBox.Show("Debe completar el campo confirmar clave");
                 bandera = false;
-                throw new Exception("Debe completar el campo confirmar clave");
                 
             }
 
@@ -193,16 +212,10 @@ namespace UI.Desktop
             {
                 if(!this.txtClave.Text.Equals(this.txtConfirmarClave.Text))
                 {
+                    MessageBox.Show("Las contraseñas no coinciden");
                     bandera = false;
-                    throw new Exception("Las contraseñas no coinciden");
                     
                 }
-            }
-
-            if(!bandera)
-            {
-                string mensaje = "Datos incorrectos";
-                //this.Notificar(mensaje);
             }
 
             return bandera;
@@ -238,31 +251,48 @@ namespace UI.Desktop
 
 
 
-        //Botón aceptar del formulario USUARIO DESKTOP (Aceptar, eliminar)
+        //Botón aceptar del formulario USUARIO DESKTOP, acepta dos valores = (Aceptar, eliminar)
         private void label1_Click_1(object sender, EventArgs e)
         {
-            if(_modo == ModoForm.Alta)
+
+            if(this._modo == ModoForm.Alta)
             {
-                this.MapearADatos();
-                MessageBox.Show("Usuario ingresado correctamente. Actualice la tabla!!!");
-                this.Close();
+                bool bandera = true;
+                bandera = this.Validar();
+
+                if (bandera)
+                {
+                    this.GuardarCambios();
+                    MessageBox.Show("Usuario agregado correctamente");
+
+                }
+
+                else
+                {
+                    MessageBox.Show("El usuario no pudo ser agregado");
+                }
             }
 
 
-            //Aca se programa el botón aceptar para la modificación
-            else if(_modo == ModoForm.Modificacion)
+
+            else if(this._modo == ModoForm.Baja)
             {
-                this.MapearADatos();
-                this.Close();
+                this.UsuarioActual.State = Business.Entities.BusinessEntity.States.Deleted;
+                this.GuardarCambios();
             }
 
-            //Aca se programa el botón aceptar para la baja. Se llama "Eliminar", y hay que invocar al método 
-            //Remove de la dataBase
-            else if (_modo == ModoForm.Baja)
-            {
 
-                MessageBox.Show("Usuario eliminado correctamente. Actualice la tabla!!!");
+
+            else if (this._modo == ModoForm.Modificacion)
+            {
+                this.UsuarioActual.State = Business.Entities.BusinessEntity.States.Modified;
+                this.GuardarCambios();
             }
+
+            
+
+            this.Close();
+
 
 
 

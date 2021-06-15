@@ -64,9 +64,10 @@ namespace UI.Desktop
         //Botón del menú para modificar
         private void ToolStripButton1_Click(object sender, EventArgs e)
         {
-            int id = this.ConsultaUsuario();
+            //int id = this.ConsultaUsuario();
+            int id = ((Business.Entities.Usuario)this.dgvUsuarios.SelectedRows[0].DataBoundItem).ID;
             UsuarioDesktop modificar = new UsuarioDesktop(id, ApplicationForm.ModoForm.Modificacion);
-            modificar.Show();
+            modificar.ShowDialog();
 
 
         }
@@ -75,12 +76,13 @@ namespace UI.Desktop
 
 
 
-        //Boton del menú para alta
+        //Boton del menú para alta. Funciona correctamente, revisar el checkPoint
         private void tsbNuevo_Click(object sender, EventArgs e)
         {
-            UsuarioDesktop alta = new UsuarioDesktop(ApplicationForm.ModoForm.Alta);
-            alta.btnAceptar.Text = "Guardar";
-            alta.Show();
+            UsuarioDesktop formUsuario = new UsuarioDesktop(ApplicationForm.ModoForm.Alta);
+            //alta.btnAceptar.Text = "Guardar";
+            formUsuario.ShowDialog();
+            this.Listar();
 
         }
 
@@ -92,10 +94,9 @@ namespace UI.Desktop
         //Boton del menú para eliminar
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-            int id = this.ConsultaUsuario();
+            int id = ((Business.Entities.Usuario)this.dgvUsuarios.SelectedRows[0].DataBoundItem).ID;
             UsuarioDesktop baja = new UsuarioDesktop(id, ApplicationForm.ModoForm.Baja);
-            baja.btnAceptar.Text = "Eliminar";
-            baja.Show();
+            baja.ShowDialog();
             
         }
 
