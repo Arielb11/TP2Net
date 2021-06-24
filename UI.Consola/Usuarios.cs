@@ -73,7 +73,6 @@ namespace UI.Consola
         public void ListadoGeneral()
         {
             Console.Clear();
-
             foreach (Usuario usuario in UsuarioNegocio.GetAll())
             {
                 MostrarDatos(usuario);

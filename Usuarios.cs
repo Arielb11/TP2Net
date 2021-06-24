@@ -15,12 +15,6 @@ namespace UI.Desktop
     public partial class Usuarios : Form
     {
 
-
-
-        Data.Database.UsuarioAdapter database;
-
-
-
         public Usuarios()
         {
             InitializeComponent();
@@ -64,12 +58,9 @@ namespace UI.Desktop
         //Botón del menú para modificar
         private void ToolStripButton1_Click(object sender, EventArgs e)
         {
-            //int id = this.ConsultaUsuario();
             int id = ((Business.Entities.Usuario)this.dgvUsuarios.SelectedRows[0].DataBoundItem).ID;
             UsuarioDesktop modificar = new UsuarioDesktop(id, ApplicationForm.ModoForm.Modificacion);
             modificar.ShowDialog();
-
-
         }
 
 

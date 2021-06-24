@@ -46,6 +46,15 @@ namespace Business.Logic
             UsuarioData.Save(usuario);
         }
 
+
+
+
+        //Método para validar campos del formulario de UsuarioDesktop
+        public bool ValidaCampos()
+        {
+            return false;
+        }
+
         static void Main(string[] args)
         {
 

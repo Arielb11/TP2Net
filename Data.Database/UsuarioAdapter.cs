@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Entities;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace Data.Database
 {
@@ -71,8 +73,66 @@ namespace Data.Database
 
         public List<Usuario> GetAll()
         {
-            return new List<Usuario>(Usuarios);
+            //La línea 77 pertenecía a la implementación sin base de datos
+            //return new List<Usuario>(Usuarios);
+
+            //Instanciamos el objeto de lista para retornar
+            List<Usuario> usuarios = new List<Usuario>();
+
+
+        try
+            {
+                //Apertura de la conexión a la base de datos
+                this.OpenConnection();
+
+
+                //Creamos la sentencia a ejecutar
+                SqlCommand cmdUsuarios = new SqlCommand("SELECT * FROM usuarios", _SqlConnection);
+
+                //Objeto DataReader, recuperará los datos de la base de datos
+
+                SqlDataReader drUsuarios = cmdUsuarios.ExecuteReader();
+
+                //Read() lee una fila de las devueltas por el comando sql
+                //carga los datos en drUsuarios para poder accederlos,
+                //devuelve verdadero mientras haya podido leer datos, 
+                //y avanza a la fila siguiente para el próximo read.
+
+
+                while (drUsuarios.Read())
+                {
+                    Usuario usr = new Usuario();
+
+                    usr.ID = (int)drUsuarios["id_usuario"];
+                    usr._NombreUsuario = (string)drUsuarios["nombre_usuario"];
+                    usr._Clave = (string)drUsuarios["clave"];
+                    usr._Habilitado = (bool)drUsuarios["habilitado"];
+                    usr._Nombre = (string)drUsuarios["nombre"];
+                    usr._Apellido = (string)drUsuarios["apellido"];
+                    usr._Email = (string)drUsuarios["email"];
+
+                    usuarios.Add(usr);
+
+                }
+
+                //Cerramos el DataReader y la conexión a la DataBase
+                drUsuarios.Close();
+            }catch(Exception Ex)
+            {
+                Exception ExceptionManejada = new Exception("Error al recuperar lista de usuarios", Ex);
+                throw ExceptionManejada;
+            }
+
+            finally
+            {
+                this.CloseConnection();
+            }
+            
+            return usuarios;
         }
+
+
+
 
         public Business.Entities.Usuario GetOne(int ID)
         {

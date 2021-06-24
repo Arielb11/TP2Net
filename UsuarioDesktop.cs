@@ -15,6 +15,7 @@ namespace UI.Desktop
     {
 
         Business.Entities.Usuario usuarioActual;
+        Business.Logic.UsuarioLogic usuarioValido;
 
         public Business.Entities.Usuario UsuarioActual
         {
@@ -127,14 +128,15 @@ namespace UI.Desktop
             
             
         }
-
+        
 
 
 
         public override bool Validar()
         {
-
+            //usuarioValido = new Business.Logic.UsuarioLogic();
             bool bandera = true;
+            //bandera = usuarioValido.ValidaCampos();
 
             if(string.IsNullOrEmpty(this.txtApellido.Text)) 
             {

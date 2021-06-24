@@ -9,17 +9,41 @@ namespace Data.Database
 {
     public class Adapter
     {
-        //private SqlConnection sqlConnection = new SqlConnection("ConnectionString;");
+        private SqlConnection sqlConnection;
+
+
+
+        public SqlConnection _SqlConnection
+        {
+            get { return sqlConnection; }
+            set { sqlConnection = value; }
+        }
+
+
+
+        //Clave por defecto a utlizar para la cadena de conexion
+        const string consKeyDefaultCnnString = "ConnStringLocal";
+
+        
+
+
 
         protected void OpenConnection()
         {
-            throw new Exception("Metodo no implementado");
+            string conexion = System.Configuration.ConfigurationManager.ConnectionStrings[consKeyDefaultCnnString].ConnectionString;
+            //throw new Exception("Metodo no implementado");
+            _SqlConnection = new SqlConnection(conexion);
+            _SqlConnection.Open();
         }
 
         protected void CloseConnection()
         {
-            throw new Exception("Metodo no implementado");
+            _SqlConnection.Close();
+            _SqlConnection = null;
+            //throw new Exception("Metodo no implementado");
         }
+
+
 
         protected SqlDataReader ExecuteReader(String commandText)
         {
