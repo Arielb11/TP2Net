@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Business.Entities
 {
-    class AlumnoInscripcion : BusinessEntity
+    public class Alumno : BusinessEntity
     {
         string condicion;
         int idAlumno;
@@ -14,25 +14,25 @@ namespace Business.Entities
         int nota;
 
 
-        public string _Condicion
+        public string Condicion
         {
             get { return condicion; }
             set { condicion = value; }
         }
 
-        public int _IdAlumno
+        public int IdAlumno
         {
             get { return idAlumno; }
             set { idAlumno = value; }
         }
 
-        public int _IdCurso
+        public int IdCurso
         {
             get { return idCurso; }
             set { idCurso = value; }
         }
 
-        public int _Nota
+        public int Nota
         {
             get { return nota; }
             set { nota = value; }

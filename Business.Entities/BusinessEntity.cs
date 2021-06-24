@@ -23,9 +23,6 @@ namespace Business.Entities
         Comision comision;
         Plan plan;
 
-
-
-
         public BusinessEntity()
         {
             this._State = States.New;
@@ -61,10 +58,6 @@ namespace Business.Entities
             Modified,
             Unmodified
         }
-
-
-
-
 
 
     }

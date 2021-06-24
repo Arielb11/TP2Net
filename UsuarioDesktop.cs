@@ -134,74 +134,79 @@ namespace UI.Desktop
 
         public override bool Validar()
         {
-            //usuarioValido = new Business.Logic.UsuarioLogic();
+            //Parte en prueba
+            usuarioValido = new Business.Logic.UsuarioLogic();
             bool bandera = true;
-            //bandera = usuarioValido.ValidaCampos();
+            bandera = usuarioValido.ValidaCampos(this.usuarioActual);
+            //Parte en prueba
+            
+            //Parte vieja
 
-            if(string.IsNullOrEmpty(this.txtApellido.Text)) 
-            {
-                MessageBox.Show("Debe completar el campo apellido");
-                bandera = false;
-            }
+            //if (string.IsNullOrEmpty(this.txtApellido.Text)) 
+            //{
+            //    MessageBox.Show("Debe completar el campo apellido");
+            //    bandera = false;
+            //}
 
-            if (string.IsNullOrEmpty(this.txtNombre.Text))
-            {
-                MessageBox.Show("Debe completar el campo nombre");
-                bandera = false;
-            }
+            //if (string.IsNullOrEmpty(this.txtNombre.Text))
+            //{
+            //    MessageBox.Show("Debe completar el campo nombre");
+            //    bandera = false;
+            //}
 
-            if (string.IsNullOrEmpty(this.txtUsuario.Text))
-            {
-                MessageBox.Show("Debe completar el campo nombre de usuario");
-                bandera = false;
+            //if (string.IsNullOrEmpty(this.txtUsuario.Text))
+            //{
+            //    MessageBox.Show("Debe completar el campo nombre de usuario");
+            //    bandera = false;
                 
-            }
+            //}
+
 
             //Parte del email
-            if (string.IsNullOrEmpty(this.txtEmail.Text))
-            {
-                MessageBox.Show("Debe completar el campo email");
-                bandera = false;
+            //if (string.IsNullOrEmpty(this.txtEmail.Text))
+            //{
+            //    MessageBox.Show("Debe completar el campo email");
+            //    bandera = false;
                 
-            }
+            //}
 
-            else
-            {
-                if(this.txtEmail.Text.Contains("@"))
-                {
+            //else
+            //{
+            //    if(this.txtEmail.Text.Contains("@"))
+            //    {
 
-                }
+            //    }
 
-                else
-                {
-                    MessageBox.Show("Email incorrecto, falta el símbolo @");
-                    bandera = false;
+            //    else
+            //    {
+            //        MessageBox.Show("Email incorrecto, falta el símbolo @");
+            //        bandera = false;
                     
-                }
-            }
+            //    }
+            //}
             //Parte del email
 
 
 
 
-            if(string.IsNullOrEmpty(this.txtClave.Text))
-            {
-                MessageBox.Show("Debe completar el campo clave");
-                bandera = false;
+            //if(string.IsNullOrEmpty(this.txtClave.Text))
+            //{
+            //    MessageBox.Show("Debe completar el campo clave");
+            //    bandera = false;
 
-            }
+            //}
 
-            else
-            {
-                if(this.txtClave.Text.Length < 8)
-                {
-                    MessageBox.Show("La clave debe poseer un mínimo de 8 caracteres");
-                    bandera = false;
+            //else
+            //{
+            //    if(this.txtClave.Text.Length < 8)
+            //    {
+            //        MessageBox.Show("La clave debe poseer un mínimo de 8 caracteres");
+            //        bandera = false;
                     
                     
-                }
+            //    }
 
-            }
+            //}
 
             if(string.IsNullOrEmpty(this.txtConfirmarClave.Text))
             {
@@ -266,7 +271,6 @@ namespace UI.Desktop
                 {
                     this.GuardarCambios();
                     MessageBox.Show("Usuario agregado correctamente");
-
                 }
 
                 else
@@ -338,6 +342,11 @@ namespace UI.Desktop
         }
 
         private void UsuarioDesktop_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtEmail_TextChanged(object sender, EventArgs e)
         {
 
         }
