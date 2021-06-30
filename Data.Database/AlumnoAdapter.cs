@@ -7,7 +7,7 @@ using Business.Entities;
 
 namespace Data.Database
 {
-    class AlumnoAdapter:Adapter
+    public class AlumnoAdapter:Adapter
     {
 
         #region datosEnMemoria
@@ -38,8 +38,49 @@ namespace Data.Database
 
 
             return alumnos;
-
         }
+
+
+        public Alumno GetOne(int ID)
+        {
+            return _Alumnos.Find(delegate (Alumno a) { return a.IdAlumno == ID; });
+        }
+
+        public void Delete(int ID)
+        {
+            _Alumnos.Remove(this.GetOne(ID));
+        }
+
+
+        public void Save(Alumno alumno)
+        {
+            if (alumno.State == BusinessEntity.States.New)
+            {
+                int NextID = 0;
+                foreach (Alumno usr in  _Alumnos)
+                {
+                    if (usr.ID > NextID)
+                    {
+                        NextID = usr.ID;
+                    }
+                }
+                alumno.ID = NextID + 1;
+                _Alumnos.Add(alumno);
+            }
+            else if (alumno.State == BusinessEntity.States.Deleted)
+            {
+                this.Delete(alumno.ID);
+            }
+            else if (alumno.State == BusinessEntity.States.Modified)
+            {
+                _Alumnos[_Alumnos.FindIndex(delegate (Alumno a) { return a.IdAlumno == alumno.IdAlumno; })] = alumno;
+            }
+            alumno.State = BusinessEntity.States.Unmodified;
+        }
+
+
+
+
 
     }
 }

@@ -10,7 +10,7 @@ namespace Business.Logic
 {
     public class UsuarioLogic: BusinessLogic
     {
-        Data.Database.UsuarioAdapter UsuarioData;
+        UsuarioAdapter UsuarioData;
 
         public UsuarioLogic()
         {
@@ -46,68 +46,6 @@ namespace Business.Logic
             UsuarioData.Save(usuario);
         }
 
-
-
-
-        //Método para validar campos del formulario de UsuarioDesktop
-        public bool ValidaCampos(Usuario usuarioValido)
-        {
-            if(string.IsNullOrEmpty(usuarioValido._Apellido))
-            {
-                return false;
-            }
-
-            if(string.IsNullOrEmpty(usuarioValido._Nombre))
-            {
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(usuarioValido._NombreUsuario))
-            {
-                return false;
-            }
-
-
-            //Email
-            if (string.IsNullOrEmpty(usuarioValido._Email))
-            {
-                return false;
-            }
-
-            else
-            {
-                if (usuarioValido._Email.Contains("@"))
-                {
-
-                }
-
-                else
-                {
-                    return false;
-                }
-            }
-
-            //Clave
-
-            if (string.IsNullOrEmpty(usuarioValido._Clave))
-            {
-                return false;
-            }
-
-            else
-            {
-                if (usuarioValido._Clave.Length < 8)
-                {
-                    //MessageBox.Show("La clave debe poseer un mínimo de 8 caracteres");
-                    return false;
-
-                }
-
-            }
-
-
-            return true;
-        }
 
         static void Main(string[] args)
         {

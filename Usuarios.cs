@@ -71,7 +71,6 @@ namespace UI.Desktop
         private void tsbNuevo_Click(object sender, EventArgs e)
         {
             UsuarioDesktop formUsuario = new UsuarioDesktop(ApplicationForm.ModoForm.Alta);
-            //alta.btnAceptar.Text = "Guardar";
             formUsuario.ShowDialog();
             this.Listar();
 
@@ -90,23 +89,6 @@ namespace UI.Desktop
             baja.ShowDialog();
             
         }
-
-
-
-
-
-
-
-
-        //Botón del menú para consulta
-        private void tsbConsulta_Click(object sender, EventArgs e)
-        {
-            UsuarioDesktop consulta = new UsuarioDesktop();
-            consulta._modo = ApplicationForm.ModoForm.Consulta;
-            consulta.Show();
-        }
-
-
 
 
 
@@ -144,7 +126,7 @@ namespace UI.Desktop
         }*/
 
 
-        
+        /*
         private int ConsultaUsuario()
         {
             Business.Entities.Usuario usuario = new Business.Entities.Usuario();
@@ -165,11 +147,7 @@ namespace UI.Desktop
 
             return int.Parse(id);
         }
-
-
-
-
-
+        */
 
 
         private void dgvUsuarios_CellContentClick(object sender, DataGridViewCellEventArgs e)

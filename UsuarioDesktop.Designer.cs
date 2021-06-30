@@ -235,6 +235,7 @@ namespace UI.Desktop
             this.chkHabilitado.TabIndex = 14;
             this.chkHabilitado.Text = "Habilitado";
             this.chkHabilitado.UseVisualStyleBackColor = true;
+            this.chkHabilitado.CheckedChanged += new System.EventHandler(this.chkHabilitado_CheckedChanged);
             // 
             // btnAceptar
             // 

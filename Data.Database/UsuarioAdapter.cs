@@ -11,66 +11,8 @@ namespace Data.Database
 {
     public class UsuarioAdapter:Adapter
     {
-
-        #region DatosEnMemoria
-        // Esta región solo se usa en esta etapa donde los datos se mantienen en memoria.
-        // Al modificar este proyecto para que acceda a la base de datos esta será eliminada
-        private static List<Usuario> _Usuarios;
-
-
-
-        //Esto es una propiedad de la lista de Usuarios
-        private static List<Usuario> Usuarios
-        {
-            get
-            {
-                if (_Usuarios == null)
-                {
-                    _Usuarios = new List<Business.Entities.Usuario>();
-                    Business.Entities.Usuario usr;
-                    usr = new Business.Entities.Usuario();
-                    usr.ID = 1;
-                    usr.State = Business.Entities.BusinessEntity.States.Unmodified;
-                    usr._Nombre = "Casimiro";
-                    usr._Apellido = "Cegado";
-                    usr._NombreUsuario = "casicegado";
-                    usr._Clave = "miro";
-                    usr._Email = "casimirocegado@gmail.com";
-                    usr._Habilitado = true;
-                    _Usuarios.Add(usr);
-
-                    usr = new Business.Entities.Usuario();
-                    usr.ID = 2;
-                    usr.State = Business.Entities.BusinessEntity.States.Unmodified;
-                    usr._Nombre = "Armando Esteban";
-                    usr._Apellido = "Quito";
-                    usr._NombreUsuario = "aequito";
-                    usr._Clave = "carpintero";
-                    usr._Email = "armandoquito@gmail.com";
-                    usr._Habilitado = true;
-                    _Usuarios.Add(usr);
-
-                    usr = new Business.Entities.Usuario();
-                    usr.ID = 3;
-                    usr.State = Business.Entities.BusinessEntity.States.Unmodified;
-                    usr._NombreUsuario = "Alan";
-                    usr._Apellido = "Brado";
-                    usr._NombreUsuario = "alanbrado";
-                    usr._Clave = "abrete sesamo";
-                    usr._Email = "alanbrado@gmail.com";
-                    usr._Habilitado = true;
-                    _Usuarios.Add(usr);
-
-                }
-                return _Usuarios;
-            }
-        }
-        #endregion
-
-
-
-
-
+        
+        //Método modificado para base de datos
         public List<Usuario> GetAll()
         {
             //La línea 77 pertenecía a la implementación sin base de datos
@@ -78,7 +20,6 @@ namespace Data.Database
 
             //Instanciamos el objeto de lista para retornar
             List<Usuario> usuarios = new List<Usuario>();
-
 
         try
             {
@@ -110,7 +51,6 @@ namespace Data.Database
                     usr._Nombre = (string)drUsuarios["nombre"];
                     usr._Apellido = (string)drUsuarios["apellido"];
                     usr._Email = (string)drUsuarios["email"];
-
                     usuarios.Add(usr);
 
                 }
@@ -133,44 +73,173 @@ namespace Data.Database
 
 
 
-
-        public Business.Entities.Usuario GetOne(int ID)
+        //Método modificado para base de datos
+        public Usuario GetOne(int ID)
         {
-            return Usuarios.Find(delegate (Usuario u) { return u.ID == ID; });
+            //Parte previa a la base de datos
+            //return Usuarios.Find(delegate (Usuario u) { return u.ID == ID; });
+
+            
+            Usuario usr = new Usuario();
+
+            try
+            {
+                this.OpenConnection();
+                SqlCommand cmdUsuarios = new SqlCommand("SELECT * FROM usuarios WHERE id_usuario = @id", _SqlConnection);
+                cmdUsuarios.Parameters.Add("@id", SqlDbType.Int).Value = ID;
+                SqlDataReader drUsuarios = cmdUsuarios.ExecuteReader();
+
+                if(drUsuarios.Read())
+                {
+                    usr.ID = (int)drUsuarios["id_usuario"];
+                    usr._NombreUsuario = (string)drUsuarios["nombre_usuario"];
+                    usr._Clave = (string)drUsuarios["clave"];
+                    usr._Habilitado = (bool)drUsuarios["habilitado"];
+                    usr._Nombre = (string)drUsuarios["nombre"];
+                    usr._Apellido = (string)drUsuarios["apellido"];
+                    usr._Email = (string)drUsuarios["email"];
+                }
+                drUsuarios.Close();
+            }catch(Exception ex)
+            {
+                Exception excepcionManejada = new Exception("Error al recuperar datos de usuario", ex);
+                throw excepcionManejada;
+            }
+
+            finally
+            {
+                this.CloseConnection();
+            }
+
+            return usr;
         }
 
+
+
+        //Método modificado para base de datos
         public void Delete(int ID)
         {
-            Usuarios.Remove(this.GetOne(ID));
-        }
+            //Parte previa a base de datos
+            //Usuarios.Remove(this.GetOne(ID));
 
+            try
+            {
+                //Abro la conexión
+                this.OpenConnection();
+
+                //Creo la sentencia SQL
+                SqlCommand cmdDelete = new SqlCommand("DELETE usuarios WHERE id_usuario = @id", _SqlConnection);
+                cmdDelete.Parameters.Add("@id", SqlDbType.Int).Value = ID;
+
+                //Ejecuto la sentencia
+                cmdDelete.ExecuteNonQuery();
+            }catch(Exception ex)
+            {
+                Exception excepcionManejada = new Exception("Error al eliminar el usuario", ex);
+                throw excepcionManejada;
+            }
+
+            finally
+            {
+                this.CloseConnection();
+            }
+
+        }
+        
+        
+        
         public void Save(Usuario usuario)
         {
-            if (usuario.State == BusinessEntity.States.New)
-            {
-                int NextID = 0;
-                foreach (Usuario usr in Usuarios)
-                {
-                    if (usr.ID > NextID)
-                    {
-                        NextID = usr.ID;
-                    }
-                }
-                usuario.ID = NextID + 1;
-                Usuarios.Add(usuario);
-            }
-            else if (usuario.State == BusinessEntity.States.Deleted)
+            if (usuario.State == BusinessEntity.States.Deleted)
             {
                 this.Delete(usuario.ID);
             }
+            else if (usuario.State == BusinessEntity.States.New)
+            {
+                this.Insert(usuario);
+            }
             else if (usuario.State == BusinessEntity.States.Modified)
             {
-                Usuarios[Usuarios.FindIndex(delegate (Usuario u) { return u.ID == usuario.ID; })] = usuario;
+                this.Update(usuario);
             }
             usuario.State = BusinessEntity.States.Unmodified;
         }
+        
 
 
+
+        //Método modificado para base de datos
+        protected void Update(Usuario usuario)
+        {
+            try
+            {
+                this.OpenConnection();
+
+                SqlCommand cmdSave = new SqlCommand(
+                    "UPDATE usuarios SET nombre_usuario = @nombre_usuario, clave = @clave, " +
+                    "habilitado = @habilitado, nombre = @nombre, apellido = @apellido, email = @email " +
+                    "WHERE id_usuario = @id", _SqlConnection);
+
+                cmdSave.Parameters.Add("@id", SqlDbType.Int).Value = usuario.ID;
+                cmdSave.Parameters.Add("@nombre_usuario", SqlDbType.VarChar, 50).Value = usuario._NombreUsuario;
+                cmdSave.Parameters.Add("@clave", SqlDbType.VarChar, 50).Value = usuario._Clave;
+                cmdSave.Parameters.Add("@habilitado", SqlDbType.Bit).Value = usuario._Habilitado;
+                cmdSave.Parameters.Add("@nombre", SqlDbType.VarChar, 50).Value = usuario._Nombre;
+                cmdSave.Parameters.Add("@apellido", SqlDbType.VarChar, 50).Value = usuario._Apellido;
+                cmdSave.Parameters.Add("@email", SqlDbType.VarChar, 50).Value = usuario._Email;
+                cmdSave.ExecuteNonQuery();
+
+            }catch(Exception e)
+            {
+                Exception excepcionManeja = new Exception("Error al modificar datos del usuario", e);
+                throw excepcionManeja;
+            }
+
+            finally
+            {
+                this.CloseConnection();
+            }
+
+        }
+
+
+        protected void Insert(Usuario usuario)
+        {
+            try
+            {
+                this.OpenConnection();
+
+                SqlCommand cmdSave = new SqlCommand(
+                    "INSERT INTO usuarios (nombre_usuario, clave, habilitado, nombre, apellido, email) " +
+                    "VALUES (@nombre_usuario, @clave, @habilitado, @nombre, @apellido, @email) " +
+                    "SELECT @@identity",    //Esta línea es para recuperar el ID que asignó el sql automáticamente
+                    _SqlConnection);
+
+                cmdSave.Parameters.Add("@nombre_usuario", SqlDbType.VarChar, 50).Value = usuario._NombreUsuario;
+                cmdSave.Parameters.Add("@clave", SqlDbType.VarChar, 50).Value = usuario._Clave;
+                cmdSave.Parameters.Add("@habilitado", SqlDbType.Bit).Value = usuario._Habilitado;
+                cmdSave.Parameters.Add("@nombre", SqlDbType.VarChar, 50).Value = usuario._Nombre;
+                cmdSave.Parameters.Add("@apellido", SqlDbType.VarChar, 50).Value = usuario._Apellido;
+                cmdSave.Parameters.Add("@email", SqlDbType.VarChar, 50).Value = usuario._Email;
+                usuario.ID = Decimal.ToInt32((decimal)cmdSave.ExecuteScalar());
+                //Asi se obtiene el ID que asignó al BD automáticamente
+
+
+
+
+            }
+            catch(Exception Ex)
+            {
+                Exception ExcepcionManejada = new Exception("Error al crear usuario", Ex);
+                throw ExcepcionManejada;
+            }
+
+            finally
+            {
+                this.CloseConnection();
+            }
+        }
+        
 
         static void Main(string[] args)
         {

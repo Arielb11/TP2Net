@@ -22,3 +22,7 @@ C:\Net\UI.Desktop\obj\Debug\UI.Desktop.Usuarios.resources
 C:\Net\UI.Desktop\obj\Debug\UI.Desktop.Usuarios.aa-ER.resources
 C:\Net\UI.Desktop\obj\Debug\UI.Desktop.UsuarioDesktop.resources
 C:\Net\UI.Desktop\obj\Debug\UI.Desktop.ApplicationForm.resources
+C:\Net\UI.Desktop\obj\Debug\UI.Desktop.Alumnos.resources
+C:\Net\UI.Desktop\obj\Debug\UI.Desktop.AlumnosDesktop.resources
+C:\Net\UI.Desktop\obj\Debug\UI.Desktop.Especialidades.resources
+C:\Net\UI.Desktop\obj\Debug\UI.Desktop.EspecialidadesDesktop.resources

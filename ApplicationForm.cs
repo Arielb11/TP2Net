@@ -63,12 +63,12 @@ namespace UI.Desktop
 
         public virtual bool Validar() { return false; }
 
-        /*
-        public void Notificar(string titulo, string mensaje, MessageBoxButtons, botones, MessageBoxIcon icono)
+        
+        public void Notificar(string titulo, string mensaje, MessageBoxButtons botones, MessageBoxIcon icono)
         {
             MessageBox.Show(mensaje, titulo, botones, icono);
         }
-        */
+        
 
         
 

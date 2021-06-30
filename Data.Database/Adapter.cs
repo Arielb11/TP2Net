@@ -11,6 +11,8 @@ namespace Data.Database
     {
         private SqlConnection sqlConnection;
 
+        //Esto es un agregado aparte
+        string conexion = null;
 
 
         public SqlConnection _SqlConnection
@@ -25,13 +27,12 @@ namespace Data.Database
         const string consKeyDefaultCnnString = "ConnStringLocal";
 
         
-
-
-
         protected void OpenConnection()
         {
-            string conexion = System.Configuration.ConfigurationManager.ConnectionStrings[consKeyDefaultCnnString].ConnectionString;
+            //string conexion = System.Configuration.ConfigurationManager.ConnectionStrings[consKeyDefaultCnnString].ConnectionString;
             //throw new Exception("Metodo no implementado");
+
+            conexion = @"Data source = LAPTOP-3IUT7RL9; Initial Catalog = Academia; Integrated Security = True";
             _SqlConnection = new SqlConnection(conexion);
             _SqlConnection.Open();
         }
