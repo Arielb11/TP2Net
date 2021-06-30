@@ -9,3 +9,5 @@ Repositorio creado para las respectivas modificaciones y correciones del TP2 de 
 15/06/2021: Terminado el abm, y la unidad de escritorio
 
 21/06/2021: Comienzo del laboratorio 5, y la modificación de la capa de la dataBase.
+
+30/06/2021: Primer implementación en la base de datos, de la clase Usuario.
