@@ -8,6 +8,9 @@ namespace Business.Logic
 {
     public class BusinessLogic
     {
+        static void Main(String[] args)
+        {
 
+        }
     }
 }

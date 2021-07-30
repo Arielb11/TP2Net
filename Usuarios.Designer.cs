@@ -1,7 +1,7 @@
 ﻿
 namespace UI.Desktop
 {
-    partial class Usuarios
+    partial class frmUsuarios
     {
         /// <summary>
         /// Variable del diseñador necesaria.
@@ -29,7 +29,7 @@ namespace UI.Desktop
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Usuarios));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmUsuarios));
             this.tcUsuarios = new System.Windows.Forms.ToolStripContainer();
             this.tlUsuarios = new System.Windows.Forms.TableLayoutPanel();
             this.dgvUsuarios = new System.Windows.Forms.DataGridView();
@@ -61,6 +61,7 @@ namespace UI.Desktop
             // tcUsuarios.TopToolStripPanel
             // 
             this.tcUsuarios.TopToolStripPanel.Controls.Add(this.tsUsuarios);
+            this.tcUsuarios.TopToolStripPanel.Click += new System.EventHandler(this.tcUsuarios_TopToolStripPanel_Click);
             // 
             // tlUsuarios
             // 
@@ -125,12 +126,12 @@ namespace UI.Desktop
             this.tsbEliminar.Name = "tsbEliminar";
             this.tsbEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
             // 
-            // Usuarios
+            // frmUsuarios
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tcUsuarios);
-            this.Name = "Usuarios";
+            this.Name = "frmUsuarios";
             this.Load += new System.EventHandler(this.Usuarios_Load);
             this.tcUsuarios.ContentPanel.ResumeLayout(false);
             this.tcUsuarios.TopToolStripPanel.ResumeLayout(false);

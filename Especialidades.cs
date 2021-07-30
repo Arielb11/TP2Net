@@ -12,9 +12,9 @@ using Business.Logic;
 
 namespace UI.Desktop
 {
-    public partial class Especialidades : Form
+    public partial class frmEspecialidades : Form
     {
-        public Especialidades()
+        public frmEspecialidades()
         {
             InitializeComponent();
         }
@@ -22,7 +22,7 @@ namespace UI.Desktop
         public void Listar()
         {
             EspecialidadLogic el = new EspecialidadLogic();
-            //this.dgvEspecialidades.DataSource = el.GetAll();
+            this.dgvEspecialidades.DataSource = el.GetAll();
         }
         
         private void Especialidades_Load(object sender, EventArgs e)
@@ -30,35 +30,47 @@ namespace UI.Desktop
             this.Listar();
         }
 
+
+        //Done
         private void btnActualizar_Click(object sender, EventArgs e)
         {
             this.Listar();
         }
 
+
+        //Done
         private void btnSalir_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
+
+
+        //Done
         private void tsbAlta_Click(object sender, EventArgs e)
         {
-            EspecialidadesDesktop formEspecialidad = new EspecialidadesDesktop(ApplicationForm.ModoForm.Alta);
+            frmEspecialidadesDesktop formEspecialidad = new frmEspecialidadesDesktop(ApplicationForm.ModoForm.Alta);
             formEspecialidad.ShowDialog();
             this.Listar();
         }
 
+
+        //Done
         private void tsbModificar_Click(object sender, EventArgs e)
         {
             int id = ((Business.Entities.Especialidad)this.dgvEspecialidades.SelectedRows[0].DataBoundItem).ID;
-            //EspecialidadesDesktop modificar = new EspecialidadesDesktop(id, ApplicationForm.ModoForm.Modificacion);
-            //modificar.ShowDialog();
+            frmEspecialidadesDesktop modificar = new frmEspecialidadesDesktop(id, ApplicationForm.ModoForm.Modificacion);
+            modificar.ShowDialog();
+            this.Listar();
         }
 
+        //Done
         private void tsbBaja_Click(object sender, EventArgs e)
         {
             int id = ((Business.Entities.Especialidad)this.dgvEspecialidades.SelectedRows[0].DataBoundItem).ID;
-            //EspecialidadesDesktop baja = new EspecialidadesDesktop(id, ApplicationForm.ModoForm.Baja);
-            //baja.ShowDialog();
+            frmEspecialidadesDesktop baja = new frmEspecialidadesDesktop(id, ApplicationForm.ModoForm.Baja);
+            baja.ShowDialog();
+            this.Listar();
         }
     }
 }

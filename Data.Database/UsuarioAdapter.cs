@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Business.Entities;
 using System.Data;
 using System.Data.SqlClient;
@@ -23,15 +20,14 @@ namespace Data.Database
 
         try
             {
+
+                //Creamos la sentencia a ejecutar
+                SqlCommand cmdUsuarios = new SqlCommand("SELECT * FROM usuarios", SqlConnection);
+
                 //Apertura de la conexión a la base de datos
                 this.OpenConnection();
 
-
-                //Creamos la sentencia a ejecutar
-                SqlCommand cmdUsuarios = new SqlCommand("SELECT * FROM usuarios", _SqlConnection);
-
                 //Objeto DataReader, recuperará los datos de la base de datos
-
                 SqlDataReader drUsuarios = cmdUsuarios.ExecuteReader();
 
                 //Read() lee una fila de las devueltas por el comando sql
@@ -45,12 +41,12 @@ namespace Data.Database
                     Usuario usr = new Usuario();
 
                     usr.ID = (int)drUsuarios["id_usuario"];
-                    usr._NombreUsuario = (string)drUsuarios["nombre_usuario"];
-                    usr._Clave = (string)drUsuarios["clave"];
-                    usr._Habilitado = (bool)drUsuarios["habilitado"];
-                    usr._Nombre = (string)drUsuarios["nombre"];
-                    usr._Apellido = (string)drUsuarios["apellido"];
-                    usr._Email = (string)drUsuarios["email"];
+                    usr.NombreUsuario = (string)drUsuarios["nombre_usuario"];
+                    usr.Clave = (string)drUsuarios["clave"];
+                    usr.Habilitado = (bool)drUsuarios["habilitado"];
+                    usr.Nombre = (string)drUsuarios["nombre"];
+                    usr.Apellido = (string)drUsuarios["apellido"];
+                    usr.Email = (string)drUsuarios["email"];
                     usuarios.Add(usr);
 
                 }
@@ -85,19 +81,19 @@ namespace Data.Database
             try
             {
                 this.OpenConnection();
-                SqlCommand cmdUsuarios = new SqlCommand("SELECT * FROM usuarios WHERE id_usuario = @id", _SqlConnection);
+                SqlCommand cmdUsuarios = new SqlCommand("SELECT * FROM usuarios WHERE id_usuario = @id", SqlConnection);
                 cmdUsuarios.Parameters.Add("@id", SqlDbType.Int).Value = ID;
                 SqlDataReader drUsuarios = cmdUsuarios.ExecuteReader();
 
                 if(drUsuarios.Read())
                 {
                     usr.ID = (int)drUsuarios["id_usuario"];
-                    usr._NombreUsuario = (string)drUsuarios["nombre_usuario"];
-                    usr._Clave = (string)drUsuarios["clave"];
-                    usr._Habilitado = (bool)drUsuarios["habilitado"];
-                    usr._Nombre = (string)drUsuarios["nombre"];
-                    usr._Apellido = (string)drUsuarios["apellido"];
-                    usr._Email = (string)drUsuarios["email"];
+                    usr.NombreUsuario = (string)drUsuarios["nombre_usuario"];
+                    usr.Clave = (string)drUsuarios["clave"];
+                    usr.Habilitado = (bool)drUsuarios["habilitado"];
+                    usr.Nombre = (string)drUsuarios["nombre"];
+                    usr.Apellido = (string)drUsuarios["apellido"];
+                    usr.Email = (string)drUsuarios["email"];
                 }
                 drUsuarios.Close();
             }catch(Exception ex)
@@ -128,7 +124,7 @@ namespace Data.Database
                 this.OpenConnection();
 
                 //Creo la sentencia SQL
-                SqlCommand cmdDelete = new SqlCommand("DELETE usuarios WHERE id_usuario = @id", _SqlConnection);
+                SqlCommand cmdDelete = new SqlCommand("DELETE usuarios WHERE id_usuario = @id", SqlConnection);
                 cmdDelete.Parameters.Add("@id", SqlDbType.Int).Value = ID;
 
                 //Ejecuto la sentencia
@@ -145,9 +141,9 @@ namespace Data.Database
             }
 
         }
-        
-        
-        
+
+
+        //Método modificado para base de datos
         public void Save(Usuario usuario)
         {
             if (usuario.State == BusinessEntity.States.Deleted)
@@ -173,23 +169,24 @@ namespace Data.Database
         {
             try
             {
-                this.OpenConnection();
-
+                
                 SqlCommand cmdSave = new SqlCommand(
                     "UPDATE usuarios SET nombre_usuario = @nombre_usuario, clave = @clave, " +
                     "habilitado = @habilitado, nombre = @nombre, apellido = @apellido, email = @email " +
-                    "WHERE id_usuario = @id", _SqlConnection);
+                    "WHERE id_usuario = @id", SqlConnection);
 
                 cmdSave.Parameters.Add("@id", SqlDbType.Int).Value = usuario.ID;
-                cmdSave.Parameters.Add("@nombre_usuario", SqlDbType.VarChar, 50).Value = usuario._NombreUsuario;
-                cmdSave.Parameters.Add("@clave", SqlDbType.VarChar, 50).Value = usuario._Clave;
-                cmdSave.Parameters.Add("@habilitado", SqlDbType.Bit).Value = usuario._Habilitado;
-                cmdSave.Parameters.Add("@nombre", SqlDbType.VarChar, 50).Value = usuario._Nombre;
-                cmdSave.Parameters.Add("@apellido", SqlDbType.VarChar, 50).Value = usuario._Apellido;
-                cmdSave.Parameters.Add("@email", SqlDbType.VarChar, 50).Value = usuario._Email;
+                cmdSave.Parameters.Add("@nombre_usuario", SqlDbType.VarChar, 50).Value = usuario.NombreUsuario;
+                cmdSave.Parameters.Add("@clave", SqlDbType.VarChar, 50).Value = usuario.Clave;
+                cmdSave.Parameters.Add("@habilitado", SqlDbType.Bit).Value = usuario.Habilitado;
+                cmdSave.Parameters.Add("@nombre", SqlDbType.VarChar, 50).Value = usuario.Nombre;
+                cmdSave.Parameters.Add("@apellido", SqlDbType.VarChar, 50).Value = usuario.Apellido;
+                cmdSave.Parameters.Add("@email", SqlDbType.VarChar, 50).Value = usuario.Email;
+                
+                this.OpenConnection();
                 cmdSave.ExecuteNonQuery();
-
-            }catch(Exception e)
+            }
+            catch(Exception e)
             {
                 Exception excepcionManeja = new Exception("Error al modificar datos del usuario", e);
                 throw excepcionManeja;
@@ -203,6 +200,8 @@ namespace Data.Database
         }
 
 
+
+        //Método modificado para base de datos
         protected void Insert(Usuario usuario)
         {
             try
@@ -213,14 +212,14 @@ namespace Data.Database
                     "INSERT INTO usuarios (nombre_usuario, clave, habilitado, nombre, apellido, email) " +
                     "VALUES (@nombre_usuario, @clave, @habilitado, @nombre, @apellido, @email) " +
                     "SELECT @@identity",    //Esta línea es para recuperar el ID que asignó el sql automáticamente
-                    _SqlConnection);
+                    SqlConnection);
 
-                cmdSave.Parameters.Add("@nombre_usuario", SqlDbType.VarChar, 50).Value = usuario._NombreUsuario;
-                cmdSave.Parameters.Add("@clave", SqlDbType.VarChar, 50).Value = usuario._Clave;
-                cmdSave.Parameters.Add("@habilitado", SqlDbType.Bit).Value = usuario._Habilitado;
-                cmdSave.Parameters.Add("@nombre", SqlDbType.VarChar, 50).Value = usuario._Nombre;
-                cmdSave.Parameters.Add("@apellido", SqlDbType.VarChar, 50).Value = usuario._Apellido;
-                cmdSave.Parameters.Add("@email", SqlDbType.VarChar, 50).Value = usuario._Email;
+                cmdSave.Parameters.Add("@nombre_usuario", SqlDbType.VarChar, 50).Value = usuario.NombreUsuario;
+                cmdSave.Parameters.Add("@clave", SqlDbType.VarChar, 50).Value = usuario.Clave;
+                cmdSave.Parameters.Add("@habilitado", SqlDbType.Bit).Value = usuario.Habilitado;
+                cmdSave.Parameters.Add("@nombre", SqlDbType.VarChar, 50).Value = usuario.Nombre;
+                cmdSave.Parameters.Add("@apellido", SqlDbType.VarChar, 50).Value = usuario.Apellido;
+                cmdSave.Parameters.Add("@email", SqlDbType.VarChar, 50).Value = usuario.Email;
                 usuario.ID = Decimal.ToInt32((decimal)cmdSave.ExecuteScalar());
                 //Asi se obtiene el ID que asignó al BD automáticamente
 

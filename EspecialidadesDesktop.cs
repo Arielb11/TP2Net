@@ -13,33 +13,33 @@ using Data.Database;
 
 namespace UI.Desktop
 {
-    public partial class EspecialidadesDesktop : ApplicationForm
+    public partial class frmEspecialidadesDesktop : ApplicationForm
     {
 
         EspecialidadLogic especialidadLogic;
         Especialidad especialidadActual;
 
-        public EspecialidadesDesktop()
+        public frmEspecialidadesDesktop()
         {
             InitializeComponent();
         }
 
 
         //Este constructor servirá para las altas
-        public EspecialidadesDesktop(ModoForm modo) : this()
+        public frmEspecialidadesDesktop(ModoForm modo) : this()
         {
-            _modo = modo;
+            base.modo = modo;
         }
 
         //Constructor para modificaciones
-        /*
-        public EspecialidadesDesktop(int id, ModoForm modo) : this()
+
+        public frmEspecialidadesDesktop(int id, ModoForm modo) : this()
         {
-            _modo = modo;
+            base.modo = modo;
             especialidadLogic = new EspecialidadLogic();
             especialidadActual = especialidadLogic.GetOne(id);
             this.MapearDeDatos();
-        }*/
+        }
 
 
         public Especialidad EspecialidadActual
@@ -52,7 +52,20 @@ namespace UI.Desktop
 
         private void EspecialidadesDesktop_Load(object sender, EventArgs e)
         {
+            if (this.modo == ModoForm.Alta)
+            {
+                this.Text = "Alta de especialidad";
+            }
 
+            else if (this.modo == ModoForm.Modificacion)
+            {
+                this.Text = "Modificación de especialidad";
+            }
+
+            else
+            {
+                this.Text = "Baja de especialidad";
+            }
         }
 
 
@@ -61,19 +74,18 @@ namespace UI.Desktop
         //Done
         public override void MapearDeDatos()
         {
-            if (this._modo == ModoForm.Alta || this._modo == ModoForm.Modificacion)
+            if (this.modo == ModoForm.Alta || this.modo == ModoForm.Modificacion)
             {
                 this.btnAceptar.Text = "Guardar";
             }
 
-            else if (this._modo == ModoForm.Baja)
+            else if (this.modo == ModoForm.Baja)
             {
                 this.btnAceptar.Text = "Eliminar";
             }
 
             this.txtIdEspecialidad.Text = this.EspecialidadActual.ID.ToString();
             this.txtDescripcion.Text = this.EspecialidadActual.Descripcion;
-            this.txtEstado.Text = this.EspecialidadActual.State.ToString();
         }
 
 
@@ -83,7 +95,7 @@ namespace UI.Desktop
         //Done
         public override void MapearADatos()
         {
-            if (this._modo == ModoForm.Alta)
+            if (this.modo == ModoForm.Alta)
             {
                 EspecialidadActual = new Especialidad();
             }
@@ -98,23 +110,24 @@ namespace UI.Desktop
         //Done
         public override void GuardarCambios()
         {
+
             especialidadLogic = new EspecialidadLogic();
 
-            if (this._modo == ModoForm.Alta)
+            if (this.modo == ModoForm.Alta)
             {
                 this.MapearADatos();
-                //especialidadLogic.Save(EspecialidadActual);
+                especialidadLogic.Save(EspecialidadActual);
             }
 
-            else if (this._modo == ModoForm.Modificacion)
+            else if (this.modo == ModoForm.Modificacion)
             {
                 this.MapearADatos();
-                //especialidadLogic.Save(EspecialidadActual);
+                especialidadLogic.Save(EspecialidadActual);
             }
 
-            else if (this._modo == ModoForm.Baja)
+            else if (this.modo == ModoForm.Baja)
             {
-                //especialidadLogic.Save(EspecialidadActual);
+                especialidadLogic.Save(EspecialidadActual);
             }
             
 
@@ -123,26 +136,22 @@ namespace UI.Desktop
 
     
 
-        //Check It out
+        //Done
         public override bool Validar()
         {
-            especialidadLogic = new EspecialidadLogic();
+            
             bool bandera = true;
 
-            if (string.IsNullOrEmpty(this.txtDescripcion.Text))
+            if (!Validaciones.IsFieldEmpty(txtDescripcion.Text))
             {
-                //MessageBox.Show("Debe completar el campo apellido");
                 this.Notificar("Debe completar el campo descripción", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 bandera = false;
             }
-
-
             return bandera;
         }
 
 
         //Done
-        
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -154,42 +163,66 @@ namespace UI.Desktop
         //Done
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            if (this._modo == ModoForm.Alta)
+
+            bool bandera = true;
+
+            if (this.modo == ModoForm.Alta)
             {
-                bool bandera = true;
+                
                 bandera = this.Validar();
 
                 if (bandera)
                 {
                     this.GuardarCambios();
-                    //Llamar al método Notificar()
-                    //MessageBox.Show("Usuario agregado correctamente");
+                    this.Notificar("Alta de Especialidad", "Especialidad agregada correctamente", MessageBoxButtons.OK, MessageBoxIcon.None);
                 }
 
                 else
                 {
-                    //Llamar al método Notificar()
-                    //MessageBox.Show("El usuario no pudo ser agregado");
+                    this.Notificar("Alta de Especialidad", "La especialidad no pudo ser agregada", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+
+
             }
 
 
-
-            else if (this._modo == ModoForm.Baja)
+            else if (this.modo == ModoForm.Baja)
             {
                 this.EspecialidadActual.State = Business.Entities.BusinessEntity.States.Deleted;
                 this.GuardarCambios();
+                this.Notificar("Baja de especialidad", "Especialidad eliminada correctamente", MessageBoxButtons.OK, MessageBoxIcon.None);
             }
 
 
 
-            else if (this._modo == ModoForm.Modificacion)
+            else if (this.modo == ModoForm.Modificacion)
             {
                 this.EspecialidadActual.State = Business.Entities.BusinessEntity.States.Modified;
-                this.GuardarCambios();
+                bandera = this.Validar();
+
+                if (bandera)
+                {
+                    this.GuardarCambios();
+                    this.Notificar("Modificación de especialidad", "Especialidad actualizada correctamente", MessageBoxButtons.OK, MessageBoxIcon.None);
+                }
+
+                else
+                {
+                    this.Notificar("Modificación de especialidad", "La especialidad no pudo ser actualizada correctamente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
 
             this.Close();
+        }
+
+        private void txtDescripcion_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tlEspecialidadesDesktop_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 namespace UI.Desktop
 {
-    partial class Alumnos
+    partial class frmAlumnos
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@ namespace UI.Desktop
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Alumnos));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAlumnos));
             this.tcAlumnos = new System.Windows.Forms.ToolStripContainer();
             this.tlAlumnos = new System.Windows.Forms.TableLayoutPanel();
             this.dgvAlumnos = new System.Windows.Forms.DataGridView();
@@ -89,6 +89,7 @@ namespace UI.Desktop
             this.dgvAlumnos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAlumnos.Location = new System.Drawing.Point(3, 3);
             this.dgvAlumnos.Name = "dgvAlumnos";
+            this.dgvAlumnos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAlumnos.Size = new System.Drawing.Size(794, 390);
             this.dgvAlumnos.TabIndex = 0;
             this.dgvAlumnos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAlumnos_CellContentClick);
@@ -156,13 +157,13 @@ namespace UI.Desktop
             this.tsbEliminar.Text = "Eliminar";
             this.tsbEliminar.Click += new System.EventHandler(this.tsbEliminar_Click);
             // 
-            // Alumnos
+            // frmAlumnos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.tcAlumnos);
-            this.Name = "Alumnos";
+            this.Name = "frmAlumnos";
             this.Text = "Alumnos";
             this.Load += new System.EventHandler(this.Alumnos_Load);
             this.tcAlumnos.ContentPanel.ResumeLayout(false);

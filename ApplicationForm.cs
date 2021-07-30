@@ -15,12 +15,12 @@ namespace UI.Desktop
 
         //Formulario básico del cual heredarán todos los formularios para altas, bajas y modificaciones
 
-        public ModoForm _modo;
+        public ModoForm modo;
 
         public ModoForm Modo
         {
-            get { return _modo; }
-            set { _modo = value; }
+            get { return modo; }
+            set { modo = value; }
         }
 
         //Paso 2 done
@@ -78,12 +78,9 @@ namespace UI.Desktop
         realizan los avisos al usuario sólo se debe modificar este método, en 
         lugar de tener que reemplazarlo en toda la aplicación.*/
 
-
-        
-
         public void Notificar(string mensaje, MessageBoxButtons botones, MessageBoxIcon icono)
         {
-            //this.Notificar(this.Text, mensaje, botones, icono);
+            this.Notificar(this.Text, mensaje, botones, icono);
         }
 
 

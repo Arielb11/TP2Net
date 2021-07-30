@@ -9,18 +9,25 @@ namespace Data.Database
 {
     public class Adapter
     {
-        private SqlConnection sqlConnection;
+        private SqlConnection _sqlConnection;
 
         //Esto es un agregado aparte
         string conexion = null;
 
 
-        public SqlConnection _SqlConnection
+        //Nuevo constructor por el profe
+        public Adapter()
         {
-            get { return sqlConnection; }
-            set { sqlConnection = value; }
+            conexion = @"Data Source=localhost;Initial Catalog=Academia;Integrated Security=True";
+            SqlConnection = new SqlConnection(conexion);
         }
 
+
+        public SqlConnection SqlConnection
+        {
+            get { return _sqlConnection; }
+            set { _sqlConnection = value; }
+        }
 
 
         //Clave por defecto a utlizar para la cadena de conexion
@@ -32,16 +39,15 @@ namespace Data.Database
             //string conexion = System.Configuration.ConfigurationManager.ConnectionStrings[consKeyDefaultCnnString].ConnectionString;
             //throw new Exception("Metodo no implementado");
 
-            conexion = @"Data source = LAPTOP-3IUT7RL9; Initial Catalog = Academia; Integrated Security = True";
-            _SqlConnection = new SqlConnection(conexion);
-            _SqlConnection.Open();
+            //conexion = @"Data Source=localhost;Initial Catalog=Academia;Integrated Security=True";
+            //SqlConnection = new SqlConnection(conexion);
+            SqlConnection.Open();
         }
 
         protected void CloseConnection()
         {
-            _SqlConnection.Close();
-            _SqlConnection = null;
-            //throw new Exception("Metodo no implementado");
+            SqlConnection.Close();
+            SqlConnection = null;
         }
 
 

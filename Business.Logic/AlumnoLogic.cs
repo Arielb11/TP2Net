@@ -11,6 +11,7 @@ namespace Business.Logic
 {
     public class AlumnoLogic: BusinessLogic
     {
+        
         AlumnoAdapter alumnoData;
 
 
@@ -39,6 +40,6 @@ namespace Business.Logic
 
 
 
-
+        
     }
 }

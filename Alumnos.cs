@@ -13,9 +13,9 @@ using Business.Logic;
 
 namespace UI.Desktop
 {
-    public partial class Alumnos : Form
+    public partial class frmAlumnos : Form
     {
-        public Alumnos()
+        public frmAlumnos()
         {
             InitializeComponent();
         }
@@ -47,26 +47,32 @@ namespace UI.Desktop
         //Botones del menú formulario alumnos
         private void tsbAlta_Click(object sender, EventArgs e)
         {
-            AlumnosDesktop formAlumno = new AlumnosDesktop(ApplicationForm.ModoForm.Alta);
+            frmAlumnosDesktop formAlumno = new frmAlumnosDesktop(ApplicationForm.ModoForm.Alta);
             formAlumno.ShowDialog();
             this.Listar();
         }
 
         private void tsbEditar_Click(object sender, EventArgs e)
         {
-            int id = ((Business.Entities.Alumno)this.dgvAlumnos.SelectedRows[0].DataBoundItem).ID;
-            AlumnosDesktop baja = new AlumnosDesktop(id, ApplicationForm.ModoForm.Baja);
-            baja.ShowDialog();
+            int id = ((Business.Entities.Alumno)this.dgvAlumnos.SelectedRows[0].DataBoundItem).IdAlumno;
+            frmAlumnosDesktop modificar = new frmAlumnosDesktop(id, ApplicationForm.ModoForm.Modificacion);
+            modificar.ShowDialog();
+            this.Listar();
         }
 
         private void tsbEliminar_Click(object sender, EventArgs e)
         {
-
+            int id = ((Business.Entities.Alumno)this.dgvAlumnos.SelectedRows[0].DataBoundItem).IdAlumno;
+            frmAlumnosDesktop baja = new frmAlumnosDesktop(id, ApplicationForm.ModoForm.Baja);
+            baja.ShowDialog();
+            this.Listar();
         }
 
         private void dgvAlumnos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
+
+        
     }
 }

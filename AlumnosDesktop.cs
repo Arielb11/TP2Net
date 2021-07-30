@@ -13,7 +13,7 @@ using Business.Logic;
 
 namespace UI.Desktop
 {
-    public partial class AlumnosDesktop : ApplicationForm
+    public partial class frmAlumnosDesktop : ApplicationForm
     {
 
         Alumno alumnoActual;
@@ -30,28 +30,25 @@ namespace UI.Desktop
 
 
         //Constructor para las altas
-        public AlumnosDesktop(ModoForm modo):this()
+        public frmAlumnosDesktop(ModoForm modo):this()
         {
-            _modo = modo;
+            base.modo = modo;
         }
 
 
 
-
-
-
         //Constructor para modificaciones
-        public AlumnosDesktop(int id, ModoForm modo):this()
+        public frmAlumnosDesktop(int id, ModoForm modo):this()
         {
-            _modo = modo;
+            base.modo = modo;
             alumnoLogic = new AlumnoLogic();
-            alumnoActual = alumnoLogic.GetOne(id);
+            AlumnoActual = alumnoLogic.GetOne(id);
             this.MapearDeDatos();
         }
 
 
 
-        public AlumnosDesktop()
+        public frmAlumnosDesktop()
         {
             InitializeComponent();
         }
@@ -60,44 +57,63 @@ namespace UI.Desktop
 
         private void AlumnosDesktop_Load(object sender, EventArgs e)
         {
+            if (this.modo == ModoForm.Alta)
+            {
+                this.Text = "Alta de alumno";
+            }
 
+            else if (this.modo == ModoForm.Modificacion)
+            {
+                this.Text = "Modificación de alumno";
+            }
+
+            else
+            {
+                this.Text = "Baja de alumno";
+            }
         }
 
-
+        //Done
         public override void MapearDeDatos()
         {
-            if (this._modo == ModoForm.Alta || this._modo == ModoForm.Modificacion)
+            if (this.modo == ModoForm.Alta || this.modo == ModoForm.Modificacion)
             {
                 this.btnAceptar.Text = "Guardar";
             }
 
-            else if (this._modo == ModoForm.Baja)
+            else if (this.modo == ModoForm.Baja)
             {
                 this.btnAceptar.Text = "Eliminar";
             }
 
-            this.txtIdAlumno.Text = this.alumnoActual.IdAlumno.ToString();
-            this.txtIdCurso.Text = this.alumnoActual.IdCurso.ToString();
-            this.txtNota.Text = this.alumnoActual.Nota.ToString();
-            this.txtCondicion.Text = this.alumnoActual.Condicion;
+
+            this.txtIdUsuario.Text = this.AlumnoActual.ID.ToString();
+            this.txtIdAlumno.Text = this.AlumnoActual.IdAlumno.ToString();
+            this.txtIdCurso.Text = this.AlumnoActual.IdCurso.ToString();
+            this.txtNota.Text = this.AlumnoActual.Nota.ToString();
+            this.txtCondicion.Text = this.AlumnoActual.Condicion;
 
         }
 
 
 
-
+        //Check It out
         public override void MapearADatos()
         {
-            if (this._modo == ModoForm.Alta)
+            if (this.modo == ModoForm.Alta)
             {
-                alumnoActual = new Alumno();
+                AlumnoActual = new Alumno();
+            }
+            
+            else if (this.modo == ModoForm.Modificacion)
+            {
+                AlumnoActual.State = BusinessEntity.States.Modified;
             }
 
-            this.alumnoActual.IdCurso = int.Parse(this.txtIdCurso.Text);
-            this.alumnoActual.Nota = int.Parse(this.txtNota.Text);
-            this.alumnoActual.Condicion = this.txtCondicion.Text;
-
-
+            
+            this.AlumnoActual.IdCurso = int.Parse(this.txtIdCurso.Text);
+            this.AlumnoActual.Nota = int.Parse(this.txtNota.Text);
+            this.AlumnoActual.Condicion = this.txtCondicion.Text;
 
         }
 
@@ -105,25 +121,63 @@ namespace UI.Desktop
         {
             alumnoLogic = new AlumnoLogic();
 
-            if (this._modo == ModoForm.Alta)
+            if (this.modo == ModoForm.Alta)
             {
                 this.MapearADatos();
-                alumnoLogic.Save(alumnoActual);
+                alumnoLogic.Save(AlumnoActual);
             }
 
-            else if (this._modo == ModoForm.Modificacion)
+            else if (this.modo == ModoForm.Modificacion)
             {
-                this.MapearADatos();
-                alumnoLogic.Save(alumnoActual);
+                this.MapearDeDatos();
+                alumnoLogic.Save(AlumnoActual);
             }
 
-            else if (this._modo == ModoForm.Baja)
+            else if (this.modo == ModoForm.Baja)
             {
-                alumnoLogic.Save(alumnoActual);
+                alumnoLogic.Save(AlumnoActual);
             }
         }
 
-        public override bool Validar() { return false; }
+
+        //Done
+        public override bool Validar()
+        {
+            bool bandera = true;
+
+            if (!Validaciones.IsFieldEmpty(this.txtIdUsuario.Text) && !Validaciones.IsFieldEmpty(this.txtIdCurso.Text) && !Validaciones.IsFieldEmpty(this.txtNota.Text) && !Validaciones.IsFieldEmpty(this.txtCondicion.Text))
+            {
+                this.Notificar("Debe completar todos los campos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                bandera = false;
+                return bandera;
+            }
+
+            if (!Validaciones.IsFieldEmpty(this.txtIdUsuario.Text))
+            {
+                this.Notificar("Debe completar el campo Id usuario", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                bandera = false;
+            }
+
+            if (!Validaciones.IsFieldEmpty(this.txtIdCurso.Text))
+            {
+                this.Notificar("Debe completar el campo Id de curso", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                bandera = false;
+            }
+
+            if (!Validaciones.IsFieldEmpty(this.txtNota.Text))
+            {
+                this.Notificar("Debe completar el campo nota", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                bandera = false;
+            }
+
+            if (!Validaciones.IsFieldEmpty(this.txtCondicion.Text))
+            {
+                this.Notificar("Debe completar el campo condición", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                bandera = false;
+            }
+
+            return bandera;
+        }
 
         private void tlAlumnosDesktop_Paint(object sender, PaintEventArgs e)
         {
@@ -170,43 +224,56 @@ namespace UI.Desktop
 
         }
 
+
+        //Done
         private void btnAceptar_Click(object sender, EventArgs e)
         {
 
-            if (this._modo == ModoForm.Alta)
+            bool bandera = true;
+
+            if (this.modo == ModoForm.Alta)
             {
-                bool bandera = true;
                 bandera = this.Validar();
 
                 if (bandera)
                 {
                     this.GuardarCambios();
-                    MessageBox.Show("Alumno agregado correctamente");
+                    this.Notificar("Alta de Alumno", "Alumno agregado correctamente", MessageBoxButtons.OK, MessageBoxIcon.None);
                 }
 
                 else
                 {
-                    MessageBox.Show("El alumno no pudo ser agregado");
+                    this.Notificar("Alta de Alumno", "El alumno no pudo ser agregado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
 
 
-            else if (this._modo == ModoForm.Baja)
+            else if (this.modo == ModoForm.Baja)
             {
-                this.alumnoActual.State = Business.Entities.BusinessEntity.States.Deleted;
+                this.AlumnoActual.State = Business.Entities.BusinessEntity.States.Deleted;
                 this.GuardarCambios();
+                this.Notificar("Baja de Alumno", "Alumno eliminado correctamente", MessageBoxButtons.OK, MessageBoxIcon.None);
             }
 
 
 
-            else if (this._modo == ModoForm.Modificacion)
+            else if (this.modo == ModoForm.Modificacion)
             {
-                this.alumnoActual.State = Business.Entities.BusinessEntity.States.Modified;
-                this.GuardarCambios();
+                this.AlumnoActual.State = Business.Entities.BusinessEntity.States.Modified;
+                bandera = this.Validar();
+                
+                if (bandera)
+                {
+                    this.GuardarCambios();
+                    this.Notificar("Modificación de Alumno", "Alumno actualizado correctamente", MessageBoxButtons.OK, MessageBoxIcon.None);
+                }
+
+                else
+                {
+                    this.Notificar("Modificación de Alumno", "El alumno no pudo ser actualizado correctamente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-
-
 
             this.Close();
 
@@ -218,6 +285,16 @@ namespace UI.Desktop
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void lblIdUsuario_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtIdUsuario_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -9,8 +9,6 @@ namespace Business.Entities
     public class Especialidad : BusinessEntity
     {
         string descripcion;
-
-
         public string Descripcion
         {
             set { this.descripcion = value; }

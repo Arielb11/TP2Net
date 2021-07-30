@@ -1,21 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Business.Entities;
 using Business.Logic;
 
 namespace UI.Desktop
 {
-    public partial class Usuarios : Form
+    public partial class frmUsuarios : Form
     {
 
-        public Usuarios()
+        public frmUsuarios()
         {
             InitializeComponent();
         }
@@ -51,16 +43,13 @@ namespace UI.Desktop
         }
 
 
-
-
-
-
         //Botón del menú para modificar
         private void ToolStripButton1_Click(object sender, EventArgs e)
         {
             int id = ((Business.Entities.Usuario)this.dgvUsuarios.SelectedRows[0].DataBoundItem).ID;
-            UsuarioDesktop modificar = new UsuarioDesktop(id, ApplicationForm.ModoForm.Modificacion);
+            frmUsuarioDesktop modificar = new frmUsuarioDesktop(id, ApplicationForm.ModoForm.Modificacion);
             modificar.ShowDialog();
+            this.Listar();
         }
 
 
@@ -70,10 +59,9 @@ namespace UI.Desktop
         //Boton del menú para alta. Funciona correctamente, revisar el checkPoint
         private void tsbNuevo_Click(object sender, EventArgs e)
         {
-            UsuarioDesktop formUsuario = new UsuarioDesktop(ApplicationForm.ModoForm.Alta);
+            frmUsuarioDesktop formUsuario = new frmUsuarioDesktop(ApplicationForm.ModoForm.Alta);
             formUsuario.ShowDialog();
             this.Listar();
-
         }
 
 
@@ -85,9 +73,9 @@ namespace UI.Desktop
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             int id = ((Business.Entities.Usuario)this.dgvUsuarios.SelectedRows[0].DataBoundItem).ID;
-            UsuarioDesktop baja = new UsuarioDesktop(id, ApplicationForm.ModoForm.Baja);
+            frmUsuarioDesktop baja = new frmUsuarioDesktop(id, ApplicationForm.ModoForm.Baja);
             baja.ShowDialog();
-            
+            this.Listar();
         }
 
 
@@ -99,58 +87,12 @@ namespace UI.Desktop
         }
 
 
-
-
-
-
-        /*
-        private Business.Entities.Usuario ConsultaUsuario()
-        {
-            Business.Entities.Usuario usuario = new Business.Entities.Usuario();
-            Data.Database.UsuarioAdapter database = new Data.Database.UsuarioAdapter();
-            string id;
-
-            do
-            {
-                id = Microsoft.VisualBasic.Interaction.InputBox("Ingrese ID", "Consulta por ID", "UsuarioID", 100, 0);
-                usuario = database.GetOne(int.Parse(id));
-
-                if(usuario == null)
-                {
-                    MessageBox.Show("Id incorrecto, por favor ingrese otro");
-                }
-
-            } while (usuario == null);
-
-            return usuario;
-        }*/
-
-
-        /*
-        private int ConsultaUsuario()
-        {
-            Business.Entities.Usuario usuario = new Business.Entities.Usuario();
-            Data.Database.UsuarioAdapter database = new Data.Database.UsuarioAdapter();
-            string id;
-
-            do
-            {
-                id = Microsoft.VisualBasic.Interaction.InputBox("Ingrese ID", "Consulta por ID", "UsuarioID", 100, 0);
-                usuario = database.GetOne(int.Parse(id));
-
-                if (usuario == null)
-                {
-                    MessageBox.Show("Id incorrecto, por favor ingrese otro");
-                }
-
-            } while (usuario == null);
-
-            return int.Parse(id);
-        }
-        */
-
-
         private void dgvUsuarios_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void tcUsuarios_TopToolStripPanel_Click(object sender, EventArgs e)
         {
 
         }

@@ -18,36 +18,31 @@ namespace Business.Entities
     public class BusinessEntity
     {
 
-
-        //Por el momento quedan vacíos
-        Comision comision;
-        Plan plan;
-
         public BusinessEntity()
         {
-            this._State = States.New;
+            this.state = States.New;
         }
 
 
-        private int _ID;
+        private int id;
         public int ID
         {
             get
             {
-                return _ID;
+                return id;
             }
             set
             {
-                _ID = value;
+                id = value;
             }
         }
 
-        private States _State;
+        private States state;
 
         public States State
         {
-            get { return _State; }
-            set { _State = value; }
+            get { return state; }
+            set { state = value; }
         }
 
 

@@ -40,19 +40,11 @@ namespace Business.Logic
             UsuarioData.Delete(id);
         }
 
-        //Método que recibe como parámetro un usuario, y lo guarda en la lista
+        //Método que recibe como parámetro un usuario, y lo guarda en la base de datos
         public void Save(Usuario usuario)
         {
             UsuarioData.Save(usuario);
         }
-
-
-        static void Main(string[] args)
-        {
-
-        }
-
-
 
     }
 }

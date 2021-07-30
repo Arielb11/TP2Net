@@ -5,7 +5,7 @@ using Business.Entities;
 
 namespace UI.Desktop
 {
-    partial class UsuarioDesktop
+    partial class frmUsuarioDesktop
     {
 
         /// <summary>
@@ -259,13 +259,13 @@ namespace UI.Desktop
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
-            // UsuarioDesktop
+            // frmUsuarioDesktop
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Name = "UsuarioDesktop";
+            this.Name = "frmUsuarioDesktop";
             this.Text = "Usuario";
             this.Load += new System.EventHandler(this.UsuarioDesktop_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
