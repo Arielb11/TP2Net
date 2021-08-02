@@ -11,3 +11,5 @@ Repositorio creado para las respectivas modificaciones y correciones del TP2 de 
 21/06/2021: Comienzo del laboratorio 5, y la modificación de la capa de la dataBase.
 
 30/06/2021: Primer implementación en la base de datos, de la clase Usuario.
+
+30/07/2021: Base de datos de Alumnos, Especialidades implementadas.
